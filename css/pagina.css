@@ -1,0 +1,73 @@
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: sans-serif;
+  background: linear-gradient(180deg, #fff5f0, #ffe4e1);
+  padding: 40px 20px;
+}
+
+.contenedor-dia {
+  background: #ffffff;
+  max-width: 480px;
+  width: 100%;
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.titulo-dia {
+  color: #fdb2d4;
+  margin-bottom: 24px;
+  font-size: 28px;
+}
+
+.carta-placeholder,
+.foto-placeholder {
+  background: #fdcae1;
+  border: 2px dashed #f2b6a0;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 20px;
+  color: #a97c6e;
+  font-size: 14px;
+}
+
+.carta {
+  background: #fdcae1;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+  color: #6b4a42;
+  font-size: 15px;
+  line-height: 1.6;
+  text-align: left;
+  white-space: pre-line;
+}
+
+.foto {
+  display: block;
+  width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.btn-volver {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 24px;
+  background: #fdcae1;
+  color: #6b4a42;
+  text-decoration: none;
+  border-radius: 30px;
+  transition: background 0.2s ease;
+}
+
+.btn-volver:hover {
+  background: #fdf0ec;
+}
