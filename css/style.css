@@ -19,7 +19,7 @@ body {
 .contador {
   font-size: clamp(16px, 4vw, 22px);
   font-weight: 600;
-  color: #c9506b;
+  color: #c9509b;
   text-align: center;
   letter-spacing: 0.5px;
 }
@@ -94,14 +94,14 @@ body {
   bottom: 0;
   width: 100%;
   height: 42.857%; /* 150 / 350 */
-  background: #d97a5f;
+  background: #fffacd;
 }
 
 .capa-media {
   bottom: 36.571%; /* 128 / 350 */
   width: 81.875%;  /* 655 / 800 */
   height: 34.857%; /* 122 / 350 */
-  background: #e69485;
+  background: #fdcae1;
 }
 
 .capa-superior {
