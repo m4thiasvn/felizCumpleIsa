@@ -1,292 +1,73 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 20px;
   font-family: sans-serif;
   background: linear-gradient(180deg, #fff5f0, #ffe4e1);
-  overflow-x: hidden; /* el resplandor (900px fijo) no debe generar scroll lateral */
   padding: 40px 20px;
 }
 
-.contador {
-  font-size: clamp(16px, 4vw, 22px);
-  font-weight: 600;
-  color: #c9506b;
+.contenedor-dia {
+  background: #ffffff;
+  max-width: 480px;
+  width: 100%;
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   text-align: center;
-  letter-spacing: 0.5px;
 }
 
-.contador-titulo {
-  font-size: 13px;
+.titulo-dia {
+  color: #fdb2d4;
+  margin-bottom: 24px;
+  font-size: 28px;
+}
+
+.carta-placeholder,
+.foto-placeholder {
+  background: #fdcae1;
+  border: 2px dashed #f2b6a0;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 20px;
   color: #a97c6e;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  text-align: center;
-  margin-bottom: 6px;
+  font-size: 14px;
 }
 
-.escenario {
-  position: relative;
+.carta {
+  background: #fdcae1;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+  color: #6b4a42;
+  font-size: 15px;
+  line-height: 1.6;
+  text-align: left;
+  white-space: pre-line;
+}
+
+.foto {
+  display: block;
   width: 100%;
-  flex: 1; /* ocupa todo el alto sobrante después del header */
-  display: flex;
-  justify-content: center;
-  align-items: center; /* centra el pastel verticalmente en ese espacio */
-  overflow: hidden; /* corta el resplandor (900px fijo) para que no cause scroll lateral */
+  max-height: 320px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
-/* Contenedor del pastel. position:relative es la base para
-   posicionar las velas encima en el paso 3 con position:absolute.
-   width fluido + aspect-ratio: el alto sigue al ancho automático,
-   sin necesitar media queries para cada tamaño de pantalla.
-   margin-top: las velas son position:absolute y sobresalen por
-   arriba del propio .pastel (no cuentan para su altura), así que
-   sin este margen quedan pisando lo que esté antes en el flujo
-   (el header del contador). */
-.pastel {
-  position: relative;
-  width: clamp(300px, 90vw, 800px);
-  aspect-ratio: 800 / 350;
-  margin-top: 90px;
+.btn-volver {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 24px;
+  background: #fdcae1;
+  color: #6b4a42;
+  text-decoration: none;
+  border-radius: 30px;
+  transition: background 0.2s ease;
 }
 
-/* Resplandor cálido detrás del pastel. Es el PRIMER hijo de
-   .pastel a propósito: con position:absolute y z-index:auto,
-   el orden en el DOM decide el apilamiento, así que yendo primero
-   queda automáticamente detrás de las capas y las velas, sin
-   necesitar z-index (que además con position:relative sin
-   z-index propio en el padre puede dar resultados raros con
-   valores negativos). */
-.resplandor {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 900px;
-  height: 900px;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(255, 196, 120, 0.35), rgba(255, 196, 120, 0) 60%);
-  pointer-events: none;
-  animation: resplandor-pulso 3s ease-in-out infinite;
-}
-
-@keyframes resplandor-pulso {
-  0%, 100% { opacity: 0.7; }
-  50%      { opacity: 1; }
-}
-
-.capa {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  border-radius: 16px;
-  box-shadow: 0 8px 14px rgba(0,0,0,0.15);
-}
-
-.capa-base {
-  bottom: 0;
-  width: 100%;
-  height: 42.857%; /* 150 / 350 */
-  background: #d97a5f;
-}
-
-.capa-media {
-  bottom: 36.571%; /* 128 / 350 */
-  width: 81.875%;  /* 655 / 800 */
-  height: 34.857%; /* 122 / 350 */
-  background: #e69485;
-}
-
-.capa-superior {
-  bottom: 67.429%; /* 236 / 350 */
-  width: 64.375%;  /* 515 / 800 */
-  height: 27.143%; /* 95 / 350 */
-  background: #f2b6a0;
-}
-
-/* Goteo de glaseado sobre la capa superior */
-.glaseado {
-  position: absolute;
-  bottom: 90.571%; /* 317 / 350 */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 66.625%;  /* 533 / 800 */
-  height: 7.714%;  /* 27 / 350 */
-  background: #fff0e6;
-  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-}
-
-/* Vela: contenedor flex vertical. bottom fija dónde se apoya
-   sobre el pastel (en % del alto del pastel, no px fijo, para
-   que siga alineada aunque el pastel cambie de tamaño); el orden
-   de los hijos (llama, mecha, cuerpo) define el orden visual de
-   arriba hacia abajo. */
-.vela {
-  position: absolute;
-  bottom: 94.571%; /* 331 / 350, el borde superior de la capa-superior */
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.vela .cuerpo {
-  width: 10px;
-  height: 42px;
-  background: linear-gradient(180deg, #ffe8d6, #ffd8b8);
-  border-radius: 2px;
-  box-shadow: inset -2px 0 3px rgba(0,0,0,0.08);
-}
-
-.vela .mecha {
-  width: 3px;
-  height: 10px;
-  background: #3a2a1a;
-  border-radius: 1px;
-}
-
-.vela .llama {
-  width: 12px;
-  height: 20px;
-  background: radial-gradient(circle at 50% 30%, #fff6c8, #ffb347 60%, #ff7a45);
-  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  margin-bottom: -2px;
-  transform-origin: bottom center;
-  animation: flicker 1.4s ease-in-out infinite alternate;
-}
-
-@keyframes flicker {
-  0%   { transform: scale(1) rotate(-2deg); }
-  50%  { transform: scale(1.08) rotate(2deg); }
-  100% { transform: scale(0.96) rotate(-1deg); }
-}
-
-/* Velas especiales: mismo esqueleto HTML, distinción sutil vía
-   CSS. Llama más dorada, halo suave y animación más lenta para
-   que se sientan "mágicas" sin gritar cuál es cuál. */
-.vela.especial .llama {
-  background: radial-gradient(circle at 50% 30%, #fff9d6, #ffd76b 55%, #f0a93c);
-  box-shadow: 0 0 14px 5px rgba(255, 215, 107, 0.5);
-  animation: flicker-especial 2.2s ease-in-out infinite alternate;
-}
-
-.vela.especial .cuerpo {
-  background: linear-gradient(180deg, #fff6e0, #ffe6ad);
-  box-shadow: inset -2px 0 3px rgba(0,0,0,0.08), 0 0 10px rgba(255, 215, 107, 0.3);
-}
-
-@keyframes flicker-especial {
-  0%   { transform: scale(1) rotate(-2deg); box-shadow: 0 0 10px 3px rgba(255,215,107,0.4); }
-  50%  { transform: scale(1.1) rotate(2deg); box-shadow: 0 0 18px 6px rgba(255,215,107,0.6); }
-  100% { transform: scale(0.95) rotate(-1deg); box-shadow: 0 0 10px 3px rgba(255,215,107,0.4); }
-}
-
-.vela.especial {
-  cursor: pointer;
-}
-
-/* Vela especial todavía no disponible: llama "apagada" (gris,
-   sin brillo, sin animación) para que se note a simple vista
-   que esa sorpresa no se puede abrir todavía. */
-.vela.especial.bloqueada .llama {
-  background: #c9c2ba;
-  box-shadow: none;
-  animation: none;
-  opacity: 0.6;
-}
-
-.vela.especial.bloqueada .cuerpo {
-  filter: grayscale(70%);
-  opacity: 0.6;
-}
-
-/* Vela especial ya visitada: también apagada, pero con un tono
-   más cálido (no gris puro) para diferenciar "todavía no es tu
-   día" de "ya la abriste, pero podés volver a entrar". */
-.vela.especial.apagada .llama {
-  background: #d8c9a8;
-  box-shadow: none;
-  animation: none;
-  opacity: 0.55;
-}
-
-.vela.especial.apagada .cuerpo {
-  filter: grayscale(35%) brightness(0.95);
-  opacity: 0.75;
-}
-
-.mensaje-bloqueo {
-  position: absolute;
-  bottom: 68px;
-  left: 50%;
-  transform: translateX(-50%) translateY(6px);
-  background: rgba(255, 255, 255, 0.95);
-  color: #a14b3c;
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: 12px;
-  white-space: nowrap;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  z-index: 10;
-}
-
-.mensaje-bloqueo.visible {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-/* Vela decorativa apagada por el cursor: se corta la animación
-   de flicker y se transiciona a opacidad/escala 0, simulando
-   que el viento la apagó. */
-.vela.apagada-cursor .llama {
-  animation: none;
-  opacity: 0;
-  transform: scale(0.2) translateY(6px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-.humo {
-  position: absolute;
-  top: -6px;
-  left: 50%;
-  width: 14px;
-  height: 14px;
-  background: radial-gradient(circle, rgba(180, 180, 180, 0.6), rgba(180, 180, 180, 0));
-  border-radius: 50%;
-  transform: translate(-50%, 0) scale(1);
-  opacity: 0.8;
-  pointer-events: none;
-  animation: humo-subir 1.4s ease-out forwards;
-}
-
-@keyframes humo-subir {
-  0%   { opacity: 0.8; transform: translate(-50%, 0) scale(1); }
-  100% { opacity: 0; transform: translate(-50%, -40px) scale(2.4); }
-}
-
-/* En pantallas angostas el pastel se achica más agresivo que
-   el "grosor" de las velas (que quedaban fijas en px), así que
-   se veían desproporcionadamente gordas. Achicamos solo eso acá. */
-@media (max-width: 480px) {
-  .vela .cuerpo {
-    width: 7px;
-    height: 30px;
-  }
-  .vela .mecha {
-    height: 7px;
-  }
-  .vela .llama {
-    width: 9px;
-    height: 15px;
-  }
+.btn-volver:hover {
+  background: #fdf0ec;
 }
