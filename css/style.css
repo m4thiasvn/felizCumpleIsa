@@ -111,18 +111,6 @@ body {
   background: #f2b6a0;
 }
 
-/* Goteo de glaseado sobre la capa superior */
-.glaseado {
-  position: absolute;
-  bottom: 90.571%; /* 317 / 350 */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 66.625%;  /* 533 / 800 */
-  height: 7.714%;  /* 27 / 350 */
-  background: #fff0e6;
-  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-}
-
 /* Vela: contenedor flex vertical. bottom fija dónde se apoya
    sobre el pastel (en % del alto del pastel, no px fijo, para
    que siga alineada aunque el pastel cambie de tamaño); el orden
